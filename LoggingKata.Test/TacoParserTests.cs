@@ -28,12 +28,13 @@ namespace LoggingKata.Test
             // TODO: Complete - "line" represents input data we will Parse to
             //       extract the Longitude.  Your .csv file will have many of these lines,
             //       each representing a TacoBell location
-
+            var tacoParser = new TacoParser();
             //Arrange
 
             //Act
-
+            var actual = tacoParser.Parse(line);
             //Assert
+            Assert.Equal(expected, actual.Location.Longitude);
         }
 
 
