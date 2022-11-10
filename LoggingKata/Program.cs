@@ -22,7 +22,14 @@ namespace LoggingKata
             var lines = File.ReadAllLines(csvPath);
 
             logger.LogInfo($"Lines: {lines[0]}");
-
+            if(lines.Length == 0)
+            {
+                logger.LogError("Taco Bell is all about value, and that file didnt have any.");
+            }
+            if(lines.Length == 1)
+            {
+                logger.LogWarning("Put that file on the dollar menu, it's a bit short.");
+            }
             // Create a new instance of your TacoParser class
             var parser = new TacoParser();
 
@@ -32,13 +39,36 @@ namespace LoggingKata
             // DON'T FORGET TO LOG YOUR STEPS
 
             // Now that your Parse method is completed, START BELOW ----------
-
+            ITrackable tacoBell1 = new TacoBell();
+            ITrackable tacoBell2 = new TacoBell();
+            double distance =0;
             // TODO: Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the farthest from each other.
             // Create a `double` variable to store the distance
 
             // Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
 
             //HINT NESTED LOOPS SECTION---------------------
+            for(int i= 0; i < locations.Length; i++)
+            {
+                var locA = locations[i];
+                var corA = new GeoCoordinate();
+                corA.Latitude = locA.Location.Latitude;
+                corA.Longitude = locA.Location.Longitude;
+                for(int j=i+1; j < locations.Length; j++)
+                {
+                    var locB = locations[j];
+                    var corB = new GeoCoordinate();
+                    corB.Latitude = locB.Location.Latitude;
+                    corB.Longitude = locB.Location.Longitude;
+                    if(distance < corA.GetDistanceTo(corB))
+                        {
+                        distance = corA.GetDistanceTo(corB);
+                        tacoBell1 = locA;
+                        tacoBell2 = locB;
+                        }
+                }
+            }
+           logger.LogInfo($"The two taco bells furthest from each other can be found at {tacoBell1.Name} and {tacoBell2.Name}. But I bet they carry the same stuff.");
             // Do a loop for your locations to grab each location as the origin (perhaps: `locA`)
 
             // Create a new corA Coordinate with your locA's lat and long
